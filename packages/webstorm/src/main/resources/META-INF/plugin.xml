@@ -1,0 +1,44 @@
+<idea-plugin>
+    <id>com.fsodano.openchamber</id>
+    <name>OpenChamber</name>
+    <vendor email="fsodano@users.noreply.github.com" url="https://github.com/fsodano">fsodano</vendor>
+
+    <description><![CDATA[
+        Runs the OpenChamber web interface in a WebStorm tool window and connects
+        OpenCode to WebStorm's built-in MCP server. The agent can then use
+        WebStorm inspections, symbol search, refactorings and run configurations.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.jcef</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+            id="OpenChamber"
+            anchor="right"
+            icon="/icons/openchamber.svg"
+            factoryClass="com.fsodano.openchamber.webstorm.OpenChamberToolWindowFactory"/>
+
+        <applicationService serviceImplementation="com.fsodano.openchamber.webstorm.OpenChamberSettings"/>
+        <projectService serviceImplementation="com.fsodano.openchamber.webstorm.OpenChamberServer"/>
+
+        <applicationConfigurable
+            instance="com.fsodano.openchamber.webstorm.OpenChamberSettingsConfigurable"
+            id="com.fsodano.openchamber.settings"
+            displayName="OpenChamber"
+            parentId="tools"/>
+
+        <notificationGroup id="OpenChamber" displayType="BALLOON"/>
+        <postStartupActivity implementation="com.fsodano.openchamber.webstorm.OpenChamberStartupActivity"/>
+    </extensions>
+
+    <actions>
+        <action
+            id="OpenChamber.Open"
+            class="com.fsodano.openchamber.webstorm.OpenChamberOpenAction"
+            text="Open OpenChamber"
+            description="Open the OpenChamber tool window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>

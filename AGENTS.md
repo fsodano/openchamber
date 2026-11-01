@@ -41,6 +41,7 @@ Every fix and feature goes through these steps, in order. What counts as proof, 
 - `packages/docs`: product documentation; not a Bun workspace.
 - `packages/sdk`: guest contract for third-party panels. Manifest parse, iframe envelope, `connectHost`. Host and guest import from here; do not copy these types into `packages/ui`.
 - `packages/extensions`: app-owned SDK extensions and their build registry, not a Bun workspace. See its `DOCUMENTATION.md` for trust, packaging, and migration rules.
+- `packages/webstorm`: WebStorm plugin (Kotlin/Gradle). It hosts the web UI in a JCEF tool window and registers WebStorm's MCP server. It is not a Bun workspace.
 
 Shared UI data access and OpenCode calls: `ui-api-decoupling`.
 
@@ -83,6 +84,7 @@ implementation skills unless a specialized subsystem has to be interpreted.
 ## Validation
 
 - Use `package.json` scripts as the command source of truth. Which checks a change needs is in `openchamber-change-discipline`.
+- The WebStorm plugin is outside the Bun scripts. Its gate is `cd packages/webstorm && ./gradlew test buildPlugin verifyPlugin` with a JDK 25 and WebStorm installed; `WEBSTORM_HOME` or `-PwebstormPath` selects the IDE.
 - Before every commit of source changes, `bun run check:changed` passes (`scripts/check-changed.mjs` says what it runs). Fix the new findings; the pre-existing backlog stays out of scope unless the task is that cleanup. Never silence a rule, weaken severity, or launder types to make a check pass.
 
 ## Pull Request Handoff
